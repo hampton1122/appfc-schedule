@@ -1,0 +1,433 @@
+<!-- =========================================================
+     APPALACHIAN FC — 2026 SCHEDULE EMBED
+     ========================================================= -->
+
+<div id="appfc-schedule-root">
+  <div id="appfc-schedule-content"></div>
+</div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap');
+
+  #appfc-schedule-root {
+    --appfc-black: #0a0a0a;
+    --appfc-ink: #1a1a1a;
+    --appfc-gold: #f5c518;
+    --appfc-gold-deep: #d4a60c;
+    --appfc-smoke: #e6e3da;
+    --appfc-muted: #6b6b6b;
+    --appfc-line: rgba(10, 10, 10, 0.08);
+
+    font-family: 'Barlow', system-ui, sans-serif;
+    color: var(--appfc-ink);
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    background: #fff;
+    box-sizing: border-box;
+  }
+  #appfc-schedule-root *, #appfc-schedule-root *::before, #appfc-schedule-root *::after {
+    box-sizing: border-box;
+  }
+
+  .appfc-month-header {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    color: var(--appfc-gold-deep);
+    margin: 1.5rem 0 0.75rem;
+    padding-left: 0.5rem;
+    border-left: 3px solid var(--appfc-gold);
+  }
+  .appfc-month-header:first-child { margin-top: 0; }
+
+  .appfc-match-list { display: grid; gap: 0.75rem; }
+  .appfc-match {
+    background: #fff;
+    border: 1px solid var(--appfc-line);
+    border-left: 5px solid var(--appfc-gold);
+    border-radius: 4px;
+    padding: 1.1rem 1.25rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.25rem;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-left-color 0.2s ease;
+    position: relative;
+  }
+  .appfc-match:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px -10px rgba(10, 10, 10, 0.22);
+    border-left-color: var(--appfc-black);
+  }
+  .appfc-match.is-home { border-left-color: var(--appfc-black); }
+  .appfc-match.is-home::before {
+    content: 'HOME';
+    position: absolute;
+    top: 0; right: 0;
+    background: var(--appfc-black);
+    color: var(--appfc-gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    padding: 3px 8px 3px 10px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .appfc-date {
+    text-align: center;
+    min-width: 62px;
+    padding-right: 1rem;
+    border-right: 1px solid var(--appfc-line);
+  }
+  .appfc-date-month {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--appfc-gold-deep);
+    display: block;
+    line-height: 1;
+  }
+  .appfc-date-day {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--appfc-black);
+    display: block;
+    line-height: 1;
+    margin-top: 0.15rem;
+  }
+  .appfc-date-dow {
+    font-size: 0.65rem;
+    color: var(--appfc-muted);
+    display: block;
+    margin-top: 0.15rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .appfc-info { min-width: 0; }
+  .appfc-teams {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .appfc-team {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--appfc-black);
+    line-height: 1.2;
+  }
+  .appfc-crest {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background-color: var(--appfc-smoke);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .appfc-vs {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--appfc-gold-deep);
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    padding: 0 0.1rem;
+  }
+  .appfc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-top: 0.55rem;
+    font-size: 0.82rem;
+    color: var(--appfc-muted);
+  }
+  .appfc-meta a {
+    color: var(--appfc-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--appfc-muted);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .appfc-meta a:hover {
+    color: var(--appfc-gold-deep);
+    border-bottom-color: var(--appfc-gold-deep);
+  }
+  .appfc-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .appfc-meta-item svg {
+    width: 12px; height: 12px;
+    stroke: var(--appfc-gold-deep);
+    flex-shrink: 0;
+  }
+
+  .appfc-time {
+    text-align: right;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: var(--appfc-black);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .appfc-time-label {
+    display: block;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--appfc-muted);
+    margin-bottom: 0.3rem;
+  }
+
+  @media (max-width: 620px) {
+    .appfc-match {
+      grid-template-columns: auto 1fr;
+      gap: 0.85rem;
+      padding: 1rem;
+    }
+    .appfc-time {
+      grid-column: 1 / -1;
+      text-align: left;
+      padding-top: 0.6rem;
+      border-top: 1px dashed var(--appfc-line);
+      font-size: 1.05rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+    .appfc-time-label { display: inline; margin: 0; }
+    .appfc-date { min-width: 52px; padding-right: 0.75rem; }
+    .appfc-date-day { font-size: 1.8rem; }
+    .appfc-team { font-size: 0.95rem; gap: 0.4rem; }
+    .appfc-crest { width: 22px; height: 22px; }
+  }
+
+  .appfc-match { animation: appfc-fade 0.4s ease both; }
+  @keyframes appfc-fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var APPFC_ID = '8105';
+  var APPFC_CREST = 'https://d11602kq9f3hhz.cloudfront.net/academy/1459/461548/a814a484-b145-45ac-860b-c8185fe29a09/461548.png';
+
+  var MATCHES = [
+    {
+      id: '116260',
+      date: new Date(2026, 4, 13, 19, 0),
+      home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      away: { name: 'Asheville City SC', id: '2016', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/681/152169/f27080ef-3412-4155-a8e4-54d4ccc7f4d5/152169.png' },
+      location: 'Ted Mackorell Soccer Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+    },
+    {
+      id: '116319',
+      date: new Date(2026, 4, 19, 19, 30),
+      home: { name: 'Charlotte Eagles', id: '2136', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/493/78485/f5ee2435-1f7f-4409-855c-b8ef42092c4b/78485.png' },
+      away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      location: 'Queens Sports Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.1591346,-80.8557183&query_place_id=ChIJJQMP1PWeVogR-tQqRS89GiM'
+    },
+    {
+      id: '116396',
+      date: new Date(2026, 4, 23, 19, 0),
+      home: { name: 'Salem City FC', id: '3793', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/970/246699/314dac16-c737-4b0d-8072-792f60896589/246699.jpg' },
+      away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      location: 'R.J. Reynolds High School',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.1012958,-80.2644958&query_place_id=ChIJjYVvwzyuU4gRmI9IOqz9Hq0'
+    },
+    {
+      id: '116436',
+      date: new Date(2026, 4, 27, 19, 0),
+      home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      away: { name: 'Charlotte Independence 2', id: '2137', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/494/78483/65600fca-e27f-45f1-a828-a292a49a6954/78483.png' },
+      location: 'Ted Mackorell Soccer Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+    },
+    {
+      id: '116487',
+      date: new Date(2026, 4, 30, 19, 0),
+      home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      away: { name: 'Wake FC', id: '2128', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/477/41467/be8f4b61-a020-46d7-ba17-52a8003957a1/41467.png' },
+      location: 'Ted Mackorell Soccer Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+    },
+    {
+      id: '116551',
+      date: new Date(2026, 5, 3, 19, 0),
+      home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      away: { name: 'North Carolina FC U23', id: '2139', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/495/78486/346c0a68-5463-45da-b8e6-2905a73d79bb/78486.png' },
+      location: 'Ted Mackorell Soccer Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+    },
+    {
+      id: '116604',
+      date: new Date(2026, 5, 6, 19, 0),
+      home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      away: { name: 'Hickory FC', id: '8106', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/1460/461550/696ec877-2869-464d-8a8a-4f6a3fdd4734/461550.png' },
+      location: 'Ted Mackorell Soccer Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+    },
+    {
+      id: '116671',
+      date: new Date(2026, 5, 10, 19, 0),
+      home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      away: { name: 'Salem City FC', id: '3793', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/970/246699/314dac16-c737-4b0d-8072-792f60896589/246699.jpg' },
+      location: 'Ted Mackorell Soccer Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+    },
+    {
+      id: '116732',
+      date: new Date(2026, 5, 13, 19, 0),
+      home: { name: 'Asheville City SC', id: '2016', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/681/152169/f27080ef-3412-4155-a8e4-54d4ccc7f4d5/152169.png' },
+      away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      location: 'Greenwood Field',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.615533,-82.570009&query_place_id=ChIJB4mE1UiLWYgRg88aDA-x5cM'
+    },
+    {
+      id: '116818',
+      date: new Date(2026, 5, 17, 19, 0),
+      home: { name: 'Tobacco Road FC', id: '2164', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/528/84062/bac1894e-bff8-4316-bf90-8e179abdf60c/84062.png' },
+      away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      location: 'Durham County Memorial Stadium',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.0346057,-78.902776&query_place_id=ChIJmVa6L7njrIkRDXa9tOu_BkY'
+    },
+    {
+      id: '116884',
+      date: new Date(2026, 5, 20, 19, 30),
+      home: { name: 'Charlotte Independence 2', id: '2137', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/494/78483/65600fca-e27f-45f1-a828-a292a49a6954/78483.png' },
+      away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      location: 'Hough High School',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.467813,-80.8286096&query_place_id=ChIJcVWXdvKpVogR-h74NAwdlPY'
+    },
+    {
+      id: '116980',
+      date: new Date(2026, 5, 27, 18, 30),
+      home: { name: 'Port City FC', id: '8108', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/1462/461542/9a7d010c-48bd-4e32-a574-df6459a7e301/461542.png' },
+      away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      location: 'University of North Carolina Wilmington',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=34.2251719,-77.8745339&query_place_id=ChIJ_1RBc5P1qYkRlkb-ph033oI'
+    },
+    {
+      id: '117090',
+      date: new Date(2026, 6, 3, 19, 0),
+      home: { name: 'Hickory FC', id: '8106', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/1460/461550/696ec877-2869-464d-8a8a-4f6a3fdd4734/461550.png' },
+      away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      location: 'Moretz Stadium',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.7409473,-81.3270163&query_place_id=ChIJya7esjEwUYgRZsdSZiq64gQ'
+    },
+    {
+      id: '117242',
+      date: new Date(2026, 6, 12, 19, 0),
+      home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
+      away: { name: 'South Carolina United Bantams', id: '2061', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/726/152210/40a6e29a-b75d-49bf-b73b-f2df31472488/152210.png' },
+      location: 'Ted Mackorell Soccer Complex',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+    }
+  ];
+
+  var MONTHS_SHORT = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var MONTHS_LONG  = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  var DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+  var ICON_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function formatTime(d) {
+    var h = d.getHours(), m = d.getMinutes();
+    var ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if (h === 0) h = 12;
+    return h + ':' + (m < 10 ? '0' + m : m) + ' ' + ap;
+  }
+
+  function renderTeam(team) {
+    var crestStyle = team.crest ? 'style="background-image:url(\'' + escapeHtml(team.crest) + '\')"' : '';
+    return '<span class="appfc-team">' +
+             '<span class="appfc-crest" ' + crestStyle + ' aria-hidden="true"></span>' +
+             '<span>' + escapeHtml(team.name) + '</span>' +
+           '</span>';
+  }
+
+  function render() {
+    var container = document.getElementById('appfc-schedule-content');
+    MATCHES.sort(function (a, b) { return a.date - b.date; });
+
+    var html = '';
+    var currentMonthKey = '';
+
+    MATCHES.forEach(function (m) {
+      var isAppFcHome = m.home.id === APPFC_ID;
+      var monthKey = m.date.getFullYear() + '-' + m.date.getMonth();
+
+      if (monthKey !== currentMonthKey) {
+        if (currentMonthKey !== '') html += '</div>';
+        currentMonthKey = monthKey;
+        html += '<h3 class="appfc-month-header">' +
+                  MONTHS_LONG[m.date.getMonth()] + ' ' + m.date.getFullYear() +
+                '</h3>';
+        html += '<div class="appfc-match-list">';
+      }
+
+      var mo = MONTHS_SHORT[m.date.getMonth()];
+      var dy = m.date.getDate();
+      var dow = DAYS[m.date.getDay()];
+
+      var locInner = '<span class="appfc-meta-item">' + ICON_PIN + escapeHtml(m.location) + '</span>';
+      var metaHtml = m.mapsUrl
+        ? '<a href="' + escapeHtml(m.mapsUrl) + '" target="_blank" rel="noopener">' + locInner + '</a>'
+        : locInner;
+
+      html +=
+        '<div class="appfc-match' + (isAppFcHome ? ' is-home' : '') + '">' +
+          '<div class="appfc-date">' +
+            '<span class="appfc-date-month">' + mo + '</span>' +
+            '<span class="appfc-date-day">' + dy + '</span>' +
+            '<span class="appfc-date-dow">' + dow + '</span>' +
+          '</div>' +
+          '<div class="appfc-info">' +
+            '<div class="appfc-teams">' +
+              renderTeam(m.home) +
+              '<span class="appfc-vs">VS</span>' +
+              renderTeam(m.away) +
+            '</div>' +
+            '<div class="appfc-meta">' + metaHtml + '</div>' +
+          '</div>' +
+          '<div class="appfc-time">' +
+            '<span class="appfc-time-label">Kickoff</span>' + formatTime(m.date) +
+          '</div>' +
+        '</div>';
+    });
+    if (currentMonthKey !== '') html += '</div>';
+
+    container.innerHTML = html;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+})();
+</script>
