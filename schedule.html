@@ -172,6 +172,16 @@
     stroke: var(--appfc-gold-deep);
     flex-shrink: 0;
   }
+  .appfc-meta a:has(.appfc-watch) {
+    color: var(--appfc-gold-deep);
+    border-bottom-color: var(--appfc-gold-deep);
+    font-weight: 600;
+  }
+  .appfc-meta a:has(.appfc-watch):hover {
+    color: var(--appfc-black);
+    border-bottom-color: var(--appfc-black);
+  }
+  .appfc-watch svg { color: var(--appfc-gold-deep); }
 
   .appfc-time {
     text-align: right;
@@ -229,6 +239,25 @@
 
   var APPFC_ID = '8105';
   var APPFC_CREST = 'https://d11602kq9f3hhz.cloudfront.net/academy/1459/461548/a814a484-b145-45ac-860b-c8185fe29a09/461548.png';
+
+  // SportsEngine Play stream URLs, keyed by Modular11 match id.
+  // Kept separate from MATCHES so generate_matches.sh can rewrite the
+  // MATCHES block without clobbering these.
+  var SE_BASE_URL = 'https://www.sportsengineplay.com';
+  var STREAM_PATHS = {
+    '116260': '/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Asheville-City-SC-2026-05-13?video_id=6a051f0a331cd76eba7d4b36',
+    '116319': '/USL/Charlotte-Eagles-Soccer-Club/Charlotte-Eagles/game/Charlotte-Eagles-vs-Appalachian-FC-2026-05-19?video_id=6a0d123b8a1936a328a806f6',
+    '116396': '/USL/Salem-City/Salem-City-FC/game/Salem-City-FC-vs-Appalachian-FC-2026-05-23?video_id=6a12508575a6a9baa3cf8469',
+    '116436': '/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Charlotte-Independence-2026-05-27?video_id=69dd3c7116aa51278981844f',
+    '116487': '/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Wake-FC-2026-05-30?video_id=69dd3cb916aa512789818c83',
+    '116551': '/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-North-Carolina-FC-2026-06-03?video_id=69dd3d0416aa5127898194d2',
+    '116604': '/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Hickory-FC-2026-06-06?video_id=69dd3d4b16aa512789819c53',
+    '116671': '/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Salem-City-FC-2026-06-10?video_id=69dd3da616aa51278981a694',
+    '116732': '/USL/Asheville-City-SC-217592/Asheville-City-SC/game/Asheville-City-SC-vs-Appalachian-FC-2026-06-13?video_id=69dd3df916aa51278981aefe',
+    '116818': '/USL/Tobacco-Road-FC-113872/Tobacco-Road-FC/game/Tobacco-Road-FC-vs-Appalachian-FC-2026-06-17?video_id=69dd3e6b16aa51278981bb09',
+    '116884': '/USL/Charlotte-Independence-170814/Charlotte-Independence/game/Charlotte-Independence-vs-Appalachian-FC-2026-06-20?video_id=69dd3ec816aa51278981c443',
+    '116980': '/USL/Port-City-FC/Port-City-FC-159290/game/Port-City-FC-vs-Appalachian-FC-2026-06-27?video_id=69dd3f5516aa51278981d1b8'
+  };
 
   var MATCHES = [
     {
@@ -350,6 +379,7 @@
   var DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 
   var ICON_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+  var ICON_PLAY = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg>';
 
   function escapeHtml(s) {
     return String(s == null ? '' : s)
@@ -400,6 +430,15 @@
       var metaHtml = m.mapsUrl
         ? '<a href="' + escapeHtml(m.mapsUrl) + '" target="_blank" rel="noopener">' + locInner + '</a>'
         : locInner;
+
+      var streamPath = STREAM_PATHS[m.id];
+      if (streamPath) {
+        var streamUrl = SE_BASE_URL + streamPath;
+        metaHtml +=
+          '<a href="' + escapeHtml(streamUrl) + '" target="_blank" rel="noopener">' +
+            '<span class="appfc-meta-item appfc-watch">' + ICON_PLAY + 'Watch on SportsEngine</span>' +
+          '</a>';
+      }
 
       html +=
         '<div class="appfc-match' + (isAppFcHome ? ' is-home' : '') + '">' +
