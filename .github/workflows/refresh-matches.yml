@@ -2,8 +2,8 @@ name: Refresh matches.json
 
 on:
   schedule:
-    # Every 30 minutes. Cron is in UTC.
-    - cron: '*/30 * * * *'
+    # Every 30 minutes, offset off the hour to dodge peak Actions load.
+    - cron: '7,37 * * * *'
   workflow_dispatch: {}
 
 permissions:
