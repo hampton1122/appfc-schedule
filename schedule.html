@@ -32,6 +32,47 @@
     box-sizing: border-box;
   }
 
+  .appfc-record {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem 1.2rem;
+    background: var(--appfc-black);
+    color: #fff;
+    padding: 0.85rem 1.1rem;
+    border-left: 5px solid var(--appfc-gold);
+    border-radius: 4px;
+    margin-bottom: 1.25rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .appfc-record-label {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--appfc-gold);
+    letter-spacing: 0.18em;
+    font-size: 0.95rem;
+    margin-right: 0.25rem;
+  }
+  .appfc-record-stat {
+    font-size: 0.85rem;
+    color: #e6e6e6;
+  }
+  .appfc-record-stat strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    color: #fff;
+    font-size: 1.35rem;
+    margin-right: 0.15rem;
+    letter-spacing: 0.02em;
+  }
+  .appfc-record-sep {
+    flex: 0 0 1px;
+    align-self: stretch;
+    background: rgba(255,255,255,0.18);
+    margin: 0 0.1rem;
+  }
+
   .appfc-month-header {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1rem;
@@ -143,6 +184,23 @@
     font-size: 0.95rem;
     letter-spacing: 0.15em;
     padding: 0 0.1rem;
+  }
+  .appfc-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--appfc-black);
+    background: var(--appfc-smoke);
+    padding: 0.1rem 0.55rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+  .appfc-score.appfc-win  { background: var(--appfc-black); color: var(--appfc-gold); }
+  .appfc-score.appfc-loss { background: var(--appfc-smoke);  color: var(--appfc-muted); }
+  .appfc-score.appfc-draw { background: var(--appfc-gold);  color: var(--appfc-black); }
+  .appfc-match.is-final .appfc-time {
+    color: var(--appfc-muted);
+    font-size: 1.1rem;
   }
   .appfc-meta {
     display: flex;
@@ -268,7 +326,9 @@
       home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       away: { name: 'Asheville City SC', id: '2016', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/681/152169/f27080ef-3412-4155-a8e4-54d4ccc7f4d5/152169.png' },
       location: 'Ted Mackorell Soccer Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU',
+      detailsUrl: 'https://www.modular11.com/match_details/116260/2',
+      score: { home: 0, away: 0 }
     },
     {
       id: '116319',
@@ -276,7 +336,9 @@
       home: { name: 'Charlotte Eagles', id: '2136', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/493/78485/f5ee2435-1f7f-4409-855c-b8ef42092c4b/78485.png' },
       away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       location: 'Queens Sports Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.1591346,-80.8557183&query_place_id=ChIJJQMP1PWeVogR-tQqRS89GiM'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.1591346,-80.8557183&query_place_id=ChIJJQMP1PWeVogR-tQqRS89GiM',
+      detailsUrl: 'https://www.modular11.com/match_details/116319/2',
+      score: { home: 0, away: 4 }
     },
     {
       id: '116396',
@@ -284,7 +346,9 @@
       home: { name: 'Salem City FC', id: '3793', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/970/246699/314dac16-c737-4b0d-8072-792f60896589/246699.jpg' },
       away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       location: 'R.J. Reynolds High School',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.1012958,-80.2644958&query_place_id=ChIJjYVvwzyuU4gRmI9IOqz9Hq0'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.1012958,-80.2644958&query_place_id=ChIJjYVvwzyuU4gRmI9IOqz9Hq0',
+      detailsUrl: 'https://www.modular11.com/match_details/116396/2',
+      score: { home: 1, away: 5 }
     },
     {
       id: '116436',
@@ -292,7 +356,9 @@
       home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       away: { name: 'Charlotte Independence 2', id: '2137', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/494/78483/65600fca-e27f-45f1-a828-a292a49a6954/78483.png' },
       location: 'Ted Mackorell Soccer Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU',
+      detailsUrl: 'https://www.modular11.com/match_details/116436/2',
+      score: null
     },
     {
       id: '116487',
@@ -300,7 +366,9 @@
       home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       away: { name: 'Wake FC', id: '2128', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/477/41467/be8f4b61-a020-46d7-ba17-52a8003957a1/41467.png' },
       location: 'Ted Mackorell Soccer Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU',
+      detailsUrl: 'https://www.modular11.com/match_details/116487/2',
+      score: null
     },
     {
       id: '116551',
@@ -308,7 +376,9 @@
       home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       away: { name: 'North Carolina FC U23', id: '2139', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/495/78486/346c0a68-5463-45da-b8e6-2905a73d79bb/78486.png' },
       location: 'Ted Mackorell Soccer Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU',
+      detailsUrl: 'https://www.modular11.com/match_details/116551/2',
+      score: null
     },
     {
       id: '116604',
@@ -316,7 +386,9 @@
       home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       away: { name: 'Hickory FC', id: '8106', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/1460/461550/696ec877-2869-464d-8a8a-4f6a3fdd4734/461550.png' },
       location: 'Ted Mackorell Soccer Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU',
+      detailsUrl: 'https://www.modular11.com/match_details/116604/2',
+      score: null
     },
     {
       id: '116671',
@@ -324,7 +396,9 @@
       home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       away: { name: 'Salem City FC', id: '3793', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/970/246699/314dac16-c737-4b0d-8072-792f60896589/246699.jpg' },
       location: 'Ted Mackorell Soccer Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU',
+      detailsUrl: 'https://www.modular11.com/match_details/116671/2',
+      score: null
     },
     {
       id: '116732',
@@ -332,7 +406,9 @@
       home: { name: 'Asheville City SC', id: '2016', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/681/152169/f27080ef-3412-4155-a8e4-54d4ccc7f4d5/152169.png' },
       away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       location: 'Greenwood Field',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.615533,-82.570009&query_place_id=ChIJB4mE1UiLWYgRg88aDA-x5cM'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.615533,-82.570009&query_place_id=ChIJB4mE1UiLWYgRg88aDA-x5cM',
+      detailsUrl: 'https://www.modular11.com/match_details/116732/2',
+      score: null
     },
     {
       id: '116818',
@@ -340,7 +416,9 @@
       home: { name: 'Tobacco Road FC', id: '2164', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/528/84062/bac1894e-bff8-4316-bf90-8e179abdf60c/84062.png' },
       away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       location: 'Durham County Memorial Stadium',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.0346057,-78.902776&query_place_id=ChIJmVa6L7njrIkRDXa9tOu_BkY'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.0346057,-78.902776&query_place_id=ChIJmVa6L7njrIkRDXa9tOu_BkY',
+      detailsUrl: 'https://www.modular11.com/match_details/116818/2',
+      score: null
     },
     {
       id: '116884',
@@ -348,7 +426,9 @@
       home: { name: 'Charlotte Independence 2', id: '2137', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/494/78483/65600fca-e27f-45f1-a828-a292a49a6954/78483.png' },
       away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       location: 'Hough High School',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.467813,-80.8286096&query_place_id=ChIJcVWXdvKpVogR-h74NAwdlPY'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.467813,-80.8286096&query_place_id=ChIJcVWXdvKpVogR-h74NAwdlPY',
+      detailsUrl: 'https://www.modular11.com/match_details/116884/2',
+      score: null
     },
     {
       id: '116980',
@@ -356,7 +436,9 @@
       home: { name: 'Port City FC', id: '8108', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/1462/461542/9a7d010c-48bd-4e32-a574-df6459a7e301/461542.png' },
       away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       location: 'University of North Carolina Wilmington',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=34.2251719,-77.8745339&query_place_id=ChIJ_1RBc5P1qYkRlkb-ph033oI'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=34.2251719,-77.8745339&query_place_id=ChIJ_1RBc5P1qYkRlkb-ph033oI',
+      detailsUrl: 'https://www.modular11.com/match_details/116980/2',
+      score: null
     },
     {
       id: '117090',
@@ -364,7 +446,9 @@
       home: { name: 'Hickory FC', id: '8106', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/1460/461550/696ec877-2869-464d-8a8a-4f6a3fdd4734/461550.png' },
       away: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       location: 'Moretz Stadium',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.7409473,-81.3270163&query_place_id=ChIJya7esjEwUYgRZsdSZiq64gQ'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=35.7409473,-81.3270163&query_place_id=ChIJya7esjEwUYgRZsdSZiq64gQ',
+      detailsUrl: 'https://www.modular11.com/match_details/117090/2',
+      score: null
     },
     {
       id: '117242',
@@ -372,7 +456,9 @@
       home: { name: 'Appalachian FC', id: '8105', crest: APPFC_CREST },
       away: { name: 'South Carolina United Bantams', id: '2061', crest: 'https://d11602kq9f3hhz.cloudfront.net/academy/726/152210/40a6e29a-b75d-49bf-b73b-f2df31472488/152210.png' },
       location: 'Ted Mackorell Soccer Complex',
-      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU'
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU',
+      detailsUrl: 'https://www.modular11.com/match_details/117242/2',
+      score: null
     }
   ];
 
@@ -382,6 +468,7 @@
 
   var ICON_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
   var ICON_PLAY = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg>';
+  var ICON_DETAILS = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
 
   function escapeHtml(s) {
     return String(s == null ? '' : s)
@@ -404,11 +491,43 @@
            '</span>';
   }
 
+  function computeRecord() {
+    var w = 0, l = 0, d = 0, gf = 0, ga = 0;
+    MATCHES.forEach(function (m) {
+      if (!m.score) return;
+      var appHome = m.home.id === APPFC_ID;
+      var appFor  = appHome ? m.score.home : m.score.away;
+      var appAg   = appHome ? m.score.away : m.score.home;
+      gf += appFor; ga += appAg;
+      if (appFor > appAg) w++;
+      else if (appFor < appAg) l++;
+      else d++;
+    });
+    return { w: w, l: l, d: d, gf: gf, ga: ga, played: w + l + d };
+  }
+
+  function renderRecordBanner() {
+    var r = computeRecord();
+    if (!r.played) return '';
+    var gd = r.gf - r.ga;
+    var gdStr = (gd > 0 ? '+' : '') + gd;
+    return '<div class="appfc-record">' +
+             '<span class="appfc-record-label">2026 Season</span>' +
+             '<span class="appfc-record-stat"><strong>' + r.w + '</strong>W</span>' +
+             '<span class="appfc-record-stat"><strong>' + r.l + '</strong>L</span>' +
+             '<span class="appfc-record-stat"><strong>' + r.d + '</strong>D</span>' +
+             '<span class="appfc-record-sep"></span>' +
+             '<span class="appfc-record-stat">GF <strong>' + r.gf + '</strong></span>' +
+             '<span class="appfc-record-stat">GA <strong>' + r.ga + '</strong></span>' +
+             '<span class="appfc-record-stat">GD <strong>' + gdStr + '</strong></span>' +
+           '</div>';
+  }
+
   function render() {
     var container = document.getElementById('appfc-schedule-content');
     MATCHES.sort(function (a, b) { return a.date - b.date; });
 
-    var html = '';
+    var html = renderRecordBanner();
     var currentMonthKey = '';
 
     MATCHES.forEach(function (m) {
@@ -442,8 +561,34 @@
           '</a>';
       }
 
+      if (m.detailsUrl) {
+        metaHtml +=
+          '<a href="' + escapeHtml(m.detailsUrl) + '" target="_blank" rel="noopener">' +
+            '<span class="appfc-meta-item">' + ICON_DETAILS + 'Match details</span>' +
+          '</a>';
+      }
+
+      var isFinal = !!m.score;
+      var middleHtml;
+      if (isFinal) {
+        var appFor = isAppFcHome ? m.score.home : m.score.away;
+        var appAg  = isAppFcHome ? m.score.away : m.score.home;
+        var resultClass = appFor > appAg ? ' appfc-win'
+                         : appFor < appAg ? ' appfc-loss'
+                         : ' appfc-draw';
+        middleHtml = '<span class="appfc-score' + resultClass + '">' +
+                       m.score.home + ' - ' + m.score.away +
+                     '</span>';
+      } else {
+        middleHtml = '<span class="appfc-vs">VS</span>';
+      }
+
+      var timeHtml = isFinal
+        ? '<span class="appfc-time-label">Final</span>FT'
+        : '<span class="appfc-time-label">Kickoff</span>' + formatTime(m.date);
+
       html +=
-        '<div class="appfc-match' + (isAppFcHome ? ' is-home' : '') + '">' +
+        '<div class="appfc-match' + (isAppFcHome ? ' is-home' : '') + (isFinal ? ' is-final' : '') + '">' +
           '<div class="appfc-date">' +
             '<span class="appfc-date-month">' + mo + '</span>' +
             '<span class="appfc-date-day">' + dy + '</span>' +
@@ -452,14 +597,12 @@
           '<div class="appfc-info">' +
             '<div class="appfc-teams">' +
               renderTeam(m.home) +
-              '<span class="appfc-vs">VS</span>' +
+              middleHtml +
               renderTeam(m.away) +
             '</div>' +
             '<div class="appfc-meta">' + metaHtml + '</div>' +
           '</div>' +
-          '<div class="appfc-time">' +
-            '<span class="appfc-time-label">Kickoff</span>' + formatTime(m.date) +
-          '</div>' +
+          '<div class="appfc-time">' + timeHtml + '</div>' +
         '</div>';
     });
     if (currentMonthKey !== '') html += '</div>';

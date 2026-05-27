@@ -1,27 +1,35 @@
 #!/usr/bin/env bash
-# Fetch the Modular11 public schedule HTML and emit the MATCHES array
+# Fetch the Modular11 public schedule HTML and the SportsEngine Play
+# GraphQL livestream list, then emit the MATCHES and STREAM_PATHS blocks
 # used by schedule.html.
 #
 # Usage:
-#   ./generate_matches.sh                  # print MATCHES JS to stdout
-#   ./generate_matches.sh --update         # replace MATCHES block in schedule.html
+#   ./generate_matches.sh                  # print MATCHES + STREAM_PATHS to stdout
+#   ./generate_matches.sh --update         # replace both blocks in schedule.html
 #   ./generate_matches.sh --url '<url>'    # use a different Modular11 endpoint
 #   ./generate_matches.sh --file <path>    # target a specific schedule.html
+#   ./generate_matches.sh --no-streams     # skip SE fetch (MATCHES only)
 set -euo pipefail
 
-DEFAULT_URL='https://www.modular11.com/public_schedule/league/get_matches?open_page=0&academy=0&tournament=24&gender=0&age=0&brackets=&groups=&group=&match_number=0&status=scheduled&match_type=2&schedule=0&team=0&teamPlayer=8105&location=0&as_referee=0&report_status=0&start_date=2026-04-21+00%3A00%3A00&end_date=2026-12-31+23%3A59%3A59'
+DEFAULT_URL='https://www.modular11.com/public_schedule/league/get_matches?open_page=0&academy=0&tournament=24&gender=0&age=0&brackets=&groups=&group=&match_number=0&status=all&match_type=2&schedule=0&team=0&teamPlayer=8105&location=0&as_referee=0&report_status=0&start_date=2026-04-21+00%3A00%3A00&end_date=2026-12-31+23%3A59%3A59'
+
+SE_GRAPHQL_URL='https://api.sportsengineplay.com/graphql'
+SE_CHANNEL_ID='69a6f38d3a27983e4f7e7bff'
+SE_QUERY_HASH='31b3404758f5801d51d1ead0a85505d2fc65f9cd1218f9e398c3dacbc0eab2c5'
 
 URL="$DEFAULT_URL"
 UPDATE=0
 FILE=""
+FETCH_STREAMS=1
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --url)    URL="$2"; shift 2 ;;
-        --update) UPDATE=1; shift ;;
-        --file)   FILE="$2"; shift 2 ;;
+        --url)         URL="$2"; shift 2 ;;
+        --update)      UPDATE=1; shift ;;
+        --file)        FILE="$2"; shift 2 ;;
+        --no-streams)  FETCH_STREAMS=0; shift ;;
         -h|--help)
-            sed -n '2,10p' "$0" | sed 's/^# \{0,1\}//'
+            sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
             exit 0 ;;
         *) echo "Unknown argument: $1" >&2; exit 2 ;;
     esac
@@ -130,6 +138,34 @@ NR == 1 { next }
         if (crest_ids[i] == t_ids[2] && away_crest == "") away_crest = crest_urls[i]
     }
 
+    home_score = ""; away_score = ""
+    if (match(chunk, /<span class="score-match-table">[^<]*<\/span>/)) {
+        s = substr(chunk, RSTART, RLENGTH)
+        sub(/^<span[^>]*>/, "", s)
+        sub(/<\/span>$/, "", s)
+        gsub(/&nbsp;?/, "", s)
+        gsub(/[ \t]/, "", s)
+        if (match(s, /^[0-9]+:[0-9]+$/)) {
+            colon = index(s, ":")
+            home_score = substr(s, 1, colon - 1)
+            away_score = substr(s, colon + 1)
+        }
+    }
+
+    details_url = ""
+    if (match(chunk, /href="\/match_details\/[0-9]+\/[0-9]+"/)) {
+        s = substr(chunk, RSTART, RLENGTH)
+        sub(/^href="/, "", s)
+        sub(/"$/, "", s)
+        details_url = "https://www.modular11.com" s
+    }
+
+    if (home_score != "" && away_score != "") {
+        score_js = "{ home: " home_score ", away: " away_score " }"
+    } else {
+        score_js = "null"
+    }
+
     n++
     sort_keys[n] = sprintf("%04d-%02d-%02d-%02d-%02d", year, month_idx, dy, hour, minute)
     js_records[n] = \
@@ -139,8 +175,13 @@ NR == 1 { next }
         "      home: " team_js(t_names[1], t_ids[1], home_crest) ",\n" \
         "      away: " team_js(t_names[2], t_ids[2], away_crest) ",\n" \
         "      location: " jsstr(location) ",\n" \
-        "      mapsUrl: " jsstr(maps_url) "\n" \
+        "      mapsUrl: " jsstr(maps_url) ",\n" \
+        "      detailsUrl: " jsstr(details_url) ",\n" \
+        "      score: " score_js "\n" \
         "    }"
+
+    # Sidecar index for downstream stream-URL matching.
+    idx_records[n] = sprintf("%s\t%04d-%02d-%02d\t%s\t%s", id, year, month_idx + 1, dy, t_names[1], t_names[2])
 }
 
 function jsstr(s) {
@@ -174,44 +215,154 @@ END {
         print line
     }
     print "  ];"
+    print "##__INDEX__##"
+    for (i = 1; i <= n; i++) {
+        print idx_records[ord[i]]
+    }
 }
 AWK_EOF
 
-BLOCK="$(curl -fsS --compressed "$URL" -H 'X-Requested-With: XMLHttpRequest' | awk "$AWK_PROG")"
+# --- Fetch + parse Modular11 -------------------------------------------------
 
-if [[ -z "$BLOCK" ]]; then
+RAW_OUT="$(curl -fsS --compressed "$URL" -H 'X-Requested-With: XMLHttpRequest' | awk "$AWK_PROG")"
+
+if [[ -z "$RAW_OUT" ]]; then
     echo "No matches parsed from response." >&2
     exit 1
 fi
 
-if [[ "$UPDATE" -eq 1 ]]; then
-    [[ -f "$FILE" ]] || { echo "File not found: $FILE" >&2; exit 1; }
-    TMP="$(mktemp)"
-    if ! BLOCK_CONTENT="$BLOCK" awk '
-            BEGIN { replaced = 0; in_block = 0 }
-            !in_block && /var MATCHES = \[/ {
-                print ENVIRON["BLOCK_CONTENT"]
+MATCHES_BLOCK="${RAW_OUT%%##__INDEX__##*}"
+MATCHES_BLOCK="${MATCHES_BLOCK%$'\n'}"
+INDEX_BLOCK="${RAW_OUT#*##__INDEX__##}"
+INDEX_BLOCK="${INDEX_BLOCK#$'\n'}"
+
+# --- Fetch SE streams + build STREAM_PATHS ---------------------------------
+
+if [[ "$FETCH_STREAMS" -eq 1 ]]; then
+    SE_REQUEST=$(cat <<JSON
+{"operationName":"GetLiveStreams","variables":{"limit":100,"showNonScheduled":false,"hideCourtStreams":true,"showOnlyCourtStreams":false,"channelId":"${SE_CHANNEL_ID}","page":1,"gender":"","level":"","sport":"","sort":{"liveStartDateTime":1,"weight":1},"isLiveOrUpcoming":true,"teamId":"","participantId":null,"subVenue":null,"venue":""},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"${SE_QUERY_HASH}"}}}
+JSON
+)
+    SE_JSON=$(curl -fsS --compressed -X POST "$SE_GRAPHQL_URL" \
+        -H 'Content-Type: application/json' \
+        --data "$SE_REQUEST")
+else
+    SE_JSON='{"data":{"liveStreams":{"data":[]}}}'
+fi
+
+STREAM_PATHS_BLOCK=$(
+    SE_JSON="$SE_JSON" INDEX_BLOCK="$INDEX_BLOCK" EXISTING_FILE="$FILE" \
+    python3 - <<'PYEOF'
+import json, os, re, sys, datetime
+
+se = json.loads(os.environ["SE_JSON"])
+streams = (se.get("data") or {}).get("liveStreams") or {}
+streams = streams.get("data") or []
+
+def norm(name):
+    return re.sub(r"\s+", " ", (name or "").strip().lower())
+
+# date_key -> list of (pageUrl, home_norm, away_norm)
+by_date = {}
+for s in streams:
+    page_url = s.get("pageUrl")
+    ts = s.get("liveStartDateTime")
+    if not page_url or ts is None:
+        continue
+    dt = datetime.datetime.fromtimestamp(int(ts) / 1000)
+    key = dt.strftime("%Y-%m-%d")
+    home = (((s.get("homeTeamChannel") or {}).get("team") or {}).get("name")) or ""
+    away = (((s.get("awayTeamChannel") or {}).get("team") or {}).get("name")) or ""
+    by_date.setdefault(key, []).append((page_url, norm(home), norm(away)))
+
+# Load existing STREAM_PATHS (preserve entries the API didn't return — e.g. past games).
+existing = {}
+file_path = os.environ.get("EXISTING_FILE", "")
+if file_path and os.path.exists(file_path):
+    with open(file_path) as f:
+        src = f.read()
+    m = re.search(r"var STREAM_PATHS = \{(.*?)\};", src, re.DOTALL)
+    if m:
+        for line in m.group(1).splitlines():
+            entry = re.match(r"\s*'([^']+)'\s*:\s*'([^']+)'", line)
+            if entry:
+                existing[entry.group(1)] = entry.group(2)
+
+# Walk the Modular11 match index, pick a stream per match.
+out = []
+for line in os.environ["INDEX_BLOCK"].splitlines():
+    if not line.strip():
+        continue
+    parts = line.split("\t")
+    if len(parts) < 4:
+        continue
+    mid, date_key, home, away = parts[0], parts[1], parts[2], parts[3]
+    candidates = by_date.get(date_key, [])
+    chosen = None
+    if len(candidates) == 1:
+        chosen = candidates[0][0]
+    elif len(candidates) > 1:
+        h, a = norm(home), norm(away)
+        for url, sh, sa in candidates:
+            if h and sh and h.split()[0] == sh.split()[0]:
+                chosen = url
+                break
+        if not chosen:
+            chosen = candidates[0][0]
+    if not chosen:
+        chosen = existing.get(mid)
+    if chosen:
+        out.append((mid, chosen))
+
+print("  var STREAM_PATHS = {")
+for i, (mid, url) in enumerate(out):
+    mid_esc = mid.replace("\\", "\\\\").replace("'", "\\'")
+    url_esc = url.replace("\\", "\\\\").replace("'", "\\'")
+    comma = "," if i < len(out) - 1 else ""
+    print(f"    '{mid_esc}': '{url_esc}'{comma}")
+print("  };")
+PYEOF
+)
+
+COMBINED_BLOCK="${MATCHES_BLOCK}"$'\n\n'"${STREAM_PATHS_BLOCK}"
+
+# --- Output or in-place update ---------------------------------------------
+
+replace_block() {
+    # $1 = file, $2 = start regex, $3 = end regex, $4 = replacement content
+    local file="$1" start_re="$2" end_re="$3" content="$4"
+    local tmp; tmp="$(mktemp)"
+    if ! START_RE="$start_re" END_RE="$end_re" REPL="$content" awk '
+            BEGIN { replaced = 0; in_block = 0; start_re = ENVIRON["START_RE"]; end_re = ENVIRON["END_RE"] }
+            !in_block && $0 ~ start_re {
+                print ENVIRON["REPL"]
                 in_block = 1
                 replaced = 1
                 next
             }
             in_block {
-                if ($0 ~ /^  \];/) { in_block = 0 }
+                if ($0 ~ end_re) { in_block = 0 }
                 next
             }
             { print }
             END { if (!replaced) exit 3 }
-        ' "$FILE" > "$TMP"; then
-        echo "MATCHES block not found in $FILE" >&2
-        rm -f "$TMP"
-        exit 1
+        ' "$file" > "$tmp"; then
+        rm -f "$tmp"
+        return 1
     fi
-    # Preserve original's trailing-newline state.
-    if [[ -n "$(tail -c 1 "$FILE" | tr -d '\n')" ]]; then
-        perl -i -pe 'chomp if eof' "$TMP"
+    if [[ -n "$(tail -c 1 "$file" | tr -d '\n')" ]]; then
+        perl -i -pe 'chomp if eof' "$tmp"
     fi
-    mv "$TMP" "$FILE"
+    mv "$tmp" "$file"
+}
+
+if [[ "$UPDATE" -eq 1 ]]; then
+    [[ -f "$FILE" ]] || { echo "File not found: $FILE" >&2; exit 1; }
+    replace_block "$FILE" 'var MATCHES = \[' '^  \];' "$MATCHES_BLOCK" \
+        || { echo "MATCHES block not found in $FILE" >&2; exit 1; }
+    replace_block "$FILE" 'var STREAM_PATHS = \{' '^  \};' "$STREAM_PATHS_BLOCK" \
+        || { echo "STREAM_PATHS block not found in $FILE" >&2; exit 1; }
     echo "Updated $FILE" >&2
 else
-    printf '%s\n' "$BLOCK"
+    printf '%s\n' "$COMBINED_BLOCK"
 fi
