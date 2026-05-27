@@ -1,0 +1,267 @@
+{
+  "matches": [
+    {
+      "id": "116260",
+      "date": "2026-05-13T19:00:00",
+      "home": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "away": {
+        "name": "Asheville City SC",
+        "id": "2016",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/681/152169/f27080ef-3412-4155-a8e4-54d4ccc7f4d5/152169.png"
+      },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
+      "detailsUrl": "https://www.modular11.com/match_details/116260/2",
+      "score": {
+        "home": 0,
+        "away": 0
+      }
+    },
+    {
+      "id": "116319",
+      "date": "2026-05-19T19:30:00",
+      "home": {
+        "name": "Charlotte Eagles",
+        "id": "2136",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/493/78485/f5ee2435-1f7f-4409-855c-b8ef42092c4b/78485.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "Queens Sports Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=35.1591346,-80.8557183&query_place_id=ChIJJQMP1PWeVogR-tQqRS89GiM",
+      "detailsUrl": "https://www.modular11.com/match_details/116319/2",
+      "score": {
+        "home": 0,
+        "away": 4
+      }
+    },
+    {
+      "id": "116396",
+      "date": "2026-05-23T19:00:00",
+      "home": {
+        "name": "Salem City FC",
+        "id": "3793",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/970/246699/314dac16-c737-4b0d-8072-792f60896589/246699.jpg"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "R.J. Reynolds High School",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.1012958,-80.2644958&query_place_id=ChIJjYVvwzyuU4gRmI9IOqz9Hq0",
+      "detailsUrl": "https://www.modular11.com/match_details/116396/2",
+      "score": {
+        "home": 1,
+        "away": 5
+      }
+    },
+    {
+      "id": "116436",
+      "date": "2026-05-27T19:00:00",
+      "home": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "away": {
+        "name": "Charlotte Independence 2",
+        "id": "2137",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/494/78483/65600fca-e27f-45f1-a828-a292a49a6954/78483.png"
+      },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
+      "detailsUrl": "https://www.modular11.com/match_details/116436/2",
+      "score": null
+    },
+    {
+      "id": "116487",
+      "date": "2026-05-30T19:00:00",
+      "home": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "away": {
+        "name": "Wake FC",
+        "id": "2128",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/477/41467/be8f4b61-a020-46d7-ba17-52a8003957a1/41467.png"
+      },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
+      "detailsUrl": "https://www.modular11.com/match_details/116487/2",
+      "score": null
+    },
+    {
+      "id": "116551",
+      "date": "2026-06-03T19:00:00",
+      "home": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "away": {
+        "name": "North Carolina FC U23",
+        "id": "2139",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/495/78486/346c0a68-5463-45da-b8e6-2905a73d79bb/78486.png"
+      },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
+      "detailsUrl": "https://www.modular11.com/match_details/116551/2",
+      "score": null
+    },
+    {
+      "id": "116604",
+      "date": "2026-06-06T19:00:00",
+      "home": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "away": {
+        "name": "Hickory FC",
+        "id": "8106",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/1460/461550/696ec877-2869-464d-8a8a-4f6a3fdd4734/461550.png"
+      },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
+      "detailsUrl": "https://www.modular11.com/match_details/116604/2",
+      "score": null
+    },
+    {
+      "id": "116671",
+      "date": "2026-06-10T19:00:00",
+      "home": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "away": {
+        "name": "Salem City FC",
+        "id": "3793",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/970/246699/314dac16-c737-4b0d-8072-792f60896589/246699.jpg"
+      },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
+      "detailsUrl": "https://www.modular11.com/match_details/116671/2",
+      "score": null
+    },
+    {
+      "id": "116732",
+      "date": "2026-06-13T19:00:00",
+      "home": {
+        "name": "Asheville City SC",
+        "id": "2016",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/681/152169/f27080ef-3412-4155-a8e4-54d4ccc7f4d5/152169.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "Greenwood Field",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=35.615533,-82.570009&query_place_id=ChIJB4mE1UiLWYgRg88aDA-x5cM",
+      "detailsUrl": "https://www.modular11.com/match_details/116732/2",
+      "score": null
+    },
+    {
+      "id": "116818",
+      "date": "2026-06-17T19:00:00",
+      "home": {
+        "name": "Tobacco Road FC",
+        "id": "2164",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/528/84062/bac1894e-bff8-4316-bf90-8e179abdf60c/84062.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "Durham County Memorial Stadium",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.0346057,-78.902776&query_place_id=ChIJmVa6L7njrIkRDXa9tOu_BkY",
+      "detailsUrl": "https://www.modular11.com/match_details/116818/2",
+      "score": null
+    },
+    {
+      "id": "116884",
+      "date": "2026-06-20T19:30:00",
+      "home": {
+        "name": "Charlotte Independence 2",
+        "id": "2137",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/494/78483/65600fca-e27f-45f1-a828-a292a49a6954/78483.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "Hough High School",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=35.467813,-80.8286096&query_place_id=ChIJcVWXdvKpVogR-h74NAwdlPY",
+      "detailsUrl": "https://www.modular11.com/match_details/116884/2",
+      "score": null
+    },
+    {
+      "id": "116980",
+      "date": "2026-06-27T18:30:00",
+      "home": {
+        "name": "Port City FC",
+        "id": "8108",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/1462/461542/9a7d010c-48bd-4e32-a574-df6459a7e301/461542.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "University of North Carolina Wilmington",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=34.2251719,-77.8745339&query_place_id=ChIJ_1RBc5P1qYkRlkb-ph033oI",
+      "detailsUrl": "https://www.modular11.com/match_details/116980/2",
+      "score": null
+    },
+    {
+      "id": "117090",
+      "date": "2026-07-03T19:00:00",
+      "home": {
+        "name": "Hickory FC",
+        "id": "8106",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/1460/461550/696ec877-2869-464d-8a8a-4f6a3fdd4734/461550.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "Moretz Stadium",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=35.7409473,-81.3270163&query_place_id=ChIJya7esjEwUYgRZsdSZiq64gQ",
+      "detailsUrl": "https://www.modular11.com/match_details/117090/2",
+      "score": null
+    },
+    {
+      "id": "117242",
+      "date": "2026-07-12T19:00:00",
+      "home": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "away": {
+        "name": "South Carolina United Bantams",
+        "id": "2061",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/726/152210/40a6e29a-b75d-49bf-b73b-f2df31472488/152210.png"
+      },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
+      "detailsUrl": "https://www.modular11.com/match_details/117242/2",
+      "score": null
+    }
+  ],
+  "streams": {
+    "116260": "/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Asheville-City-SC-2026-05-13?video_id=6a051f0a331cd76eba7d4b36",
+    "116319": "/USL/Charlotte-Eagles-Soccer-Club/Charlotte-Eagles/game/Charlotte-Eagles-vs-Appalachian-FC-2026-05-19?video_id=6a0d123b8a1936a328a806f6",
+    "116396": "/USL/Salem-City/Salem-City-FC/game/Salem-City-FC-vs-Appalachian-FC-2026-05-23?video_id=6a12508575a6a9baa3cf8469",
+    "116436": "/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Charlotte-Independence-2026-05-27?video_id=69dd3c7116aa51278981844f",
+    "116487": "/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Wake-FC-2026-05-30?video_id=69dd3cb916aa512789818c83",
+    "116551": "/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-North-Carolina-FC-2026-06-03?video_id=69dd3d0416aa5127898194d2",
+    "116604": "/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Hickory-FC-2026-06-06?video_id=69dd3d4b16aa512789819c53",
+    "116671": "/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-Salem-City-FC-2026-06-10?video_id=69dd3da616aa51278981a694",
+    "116732": "/USL/Asheville-City-SC-217592/Asheville-City-SC/game/Asheville-City-SC-vs-Appalachian-FC-2026-06-13?video_id=69dd3df916aa51278981aefe",
+    "116818": "/USL/Tobacco-Road-FC-113872/Tobacco-Road-FC/game/Tobacco-Road-FC-vs-Appalachian-FC-2026-06-17?video_id=69dd3e6b16aa51278981bb09",
+    "116884": "/USL/Charlotte-Independence-170814/Charlotte-Independence/game/Charlotte-Independence-vs-Appalachian-FC-2026-06-20?video_id=69dd3ec816aa51278981c443",
+    "116980": "/USL/Port-City-FC/Port-City-FC-159290/game/Port-City-FC-vs-Appalachian-FC-2026-06-27?video_id=69dd3f5516aa51278981d1b8",
+    "117090": "/USL/Hickory-FC/Hickory-FC-449697/game/Hickory-FC-vs-Appalachian-FC-2026-07-03?video_id=69dd421ac8e4f9157d562974",
+    "117242": "/USL/Appalachian-FC-682886/Appalachian-FC/game/Appalachian-FC-vs-South-Carolina-United-2026-07-12?video_id=69dd42ddc8e4f9157d5640eb"
+  }
+}

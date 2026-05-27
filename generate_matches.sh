@@ -36,7 +36,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-: "${FILE:=$SCRIPT_DIR/schedule.html}"
+: "${FILE:=$SCRIPT_DIR/static_schedule.html}"
 
 IFS= read -r -d '' AWK_PROG <<'AWK_EOF' || true
 BEGIN {

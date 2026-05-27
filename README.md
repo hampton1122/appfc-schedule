@@ -1,78 +1,95 @@
 # appfc-schedule
 
-Embeddable HTML/JS/CSS schedule widget for Appalachian FC, plus a helper
-script that refreshes the match list from Modular11.
+Embeddable schedule widget for Appalachian FC, hosted on GitHub Pages and
+embedded in [appalachianfc.com](https://appalachianfc.com) (Square Online).
 
-## Files
+## How it's wired
 
-- `schedule.html` — the widget. Drop-in HTML with inline CSS/JS. Matches are
-  hardcoded in a `var MATCHES = [...]` array near the top of the `<script>`
-  block.
-- `generate_matches.sh` — scrapes the Modular11 public schedule endpoint and
-  emits a `MATCHES` array in the exact shape `schedule.html` expects. Can
-  either print the block or rewrite `schedule.html` in place.
+| File | Purpose |
+| --- | --- |
+| `schedule.html` | The embed snippet. Paste into Square. Loads CSS/JS from GitHub Pages. |
+| `schedule.css` | Widget styles. Served from `https://hampton1122.github.io/appfc-schedule/schedule.css`. |
+| `schedule.js`  | Renderer. Fetches `matches.json` from the same path it was loaded from. |
+| `matches.json` | Schedule data: `{ matches: [...], streams: {...} }`. Regenerated from Modular11 + SportsEngine Play. |
+| `generate_matches_json.sh` | Refreshes `matches.json`. |
+| `generate_matches.sh` | Original generator that rewrote inline `MATCHES`/`STREAM_PATHS` blocks in `schedule.html`. **Obsolete** now that the data lives in `matches.json`; kept for reference. |
+| `.github/workflows/refresh-matches.yml` | Cron job that runs `generate_matches_json.sh --update` every 30 min and commits the result. |
 
-## Refreshing the schedule
+GitHub Pages must be enabled on the repo (Settings → Pages → Deploy from
+branch `master` / root). Pages auto-redeploys on every push.
 
-The widget renders from a static `MATCHES` array, so updating the schedule
-means regenerating that array from the Modular11 source of truth.
+## Embedding
 
-### Option 1: update `schedule.html` in place
+Paste the contents of `schedule.html` into a Square Online code block. The
+embed is just a `<link>`, a root `<div>`, and a `<script>` tag — the actual
+markup is rendered client-side by `schedule.js`.
 
-```sh
-./generate_matches.sh --update
-```
+If you serve from a different host (custom domain, alternate fork), update
+the two URLs in `schedule.html` accordingly.
 
-This fetches the default Modular11 URL (filtered to Appalachian FC,
-`teamPlayer=8105`, scheduled matches, 2026-04-21 → 2026-12-31), parses the
-HTML response, and replaces the `var MATCHES = [ ... ];` block in
-`schedule.html`. The `APPFC_CREST` constant is preserved — home/away entries
-for team id `8105` are emitted as `crest: APPFC_CREST` rather than an inline
-URL.
+## Refreshing scores and the schedule
 
-### Option 2: print the block for manual paste
+You normally don't need to do anything — the GitHub Action runs every 30 min
+and commits any changes to `matches.json`. The widget picks up new data
+within ~1 minute of the push (`schedule.js` cache-busts the fetch each
+minute).
 
-```sh
-./generate_matches.sh
-```
-
-Prints the generated `var MATCHES = [ ... ];` block to stdout so you can
-inspect or copy it into `schedule.html` yourself.
-
-### Flags
-
-- `--update` — rewrite `schedule.html` in place instead of printing to stdout.
-- `--url '<url>'` — use a different Modular11 endpoint (e.g. next season,
-  different team filter, wider date range).
-- `--file <path>` — target a specific `schedule.html` when updating. Defaults
-  to the one next to the script.
-
-### Example: pull next season
+Manual refresh:
 
 ```sh
-./generate_matches.sh --update --url 'https://www.modular11.com/public_schedule/league/get_matches?...&teamPlayer=8105&start_date=2027-01-01+00%3A00%3A00&end_date=2027-12-31+23%3A59%3A59'
+./generate_matches_json.sh --update      # write matches.json
+./generate_matches_json.sh               # print to stdout (preview)
+./generate_matches_json.sh --no-streams  # skip SportsEngine fetch
+./generate_matches_json.sh --url '<url>' # alternate Modular11 endpoint
+./generate_matches_json.sh --file <path> # alternate output file
 ```
 
-## How it works
+The script merges new SportsEngine livestream URLs with the existing
+`streams` block in `matches.json`, so past games keep their stream links
+even after the SE API drops them from "upcoming" results.
 
-Modular11's `get_matches` endpoint returns HTML (not JSON) — a table of match
-rows. `generate_matches.sh` uses `curl` + `awk` to split the response on the
-`table-content-row-uls` row marker and pull out each match's:
+## Data shape
 
-- match id (from the `uid-mobile-style` cell)
-- kickoff date/time (the `MM/DD/YY HH:MMam/pm` literal)
-- Google Maps link (first `maps/search` href in the row)
-- venue name (the portion after `" - "` in the location `data-title`)
-- home and away team id, display name, and crest URL (from
-  `/league-schedule/teams/<id>` links and their `.club-photo`
-  `background-image`)
+`matches.json`:
 
-Matches are sorted by kickoff and emitted as a JS array literal using
-`new Date(YYYY, monthIdx, D, H, M)` so the widget can render them without a
-date-parsing step.
+```json
+{
+  "matches": [
+    {
+      "id": "116260",
+      "date": "2026-05-13T19:00:00",
+      "home": { "name": "Appalachian FC", "id": "8105" },
+      "away": { "name": "Asheville City SC", "id": "2016", "crest": "https://..." },
+      "location": "Ted Mackorell Soccer Complex",
+      "mapsUrl": "https://www.google.com/maps/search/...",
+      "detailsUrl": "https://www.modular11.com/match_details/116260/2",
+      "score": { "home": 0, "away": 0 }
+    }
+  ],
+  "streams": {
+    "116260": "/USL/.../game/...?video_id=..."
+  }
+}
+```
+
+Notes:
+- Dates are ISO local strings with no timezone (`new Date(str)` parses as
+  local time in modern browsers). Match times are stored as local kickoff
+  time at the venue.
+- `home.crest` is omitted for Appalachian FC (id `8105`); `schedule.js`
+  fills in the canonical crest URL.
+- `score` is `null` for scheduled matches, `{home, away}` once final.
+
+## How the generator works
+
+Modular11's `get_matches` endpoint returns HTML — a table of match rows.
+`generate_matches_json.sh` uses `curl` + `awk` to extract each match's id,
+kickoff date/time, venue, Google Maps link, team ids/names/crests, and
+final score. Python then assembles the JSON and merges in the
+SportsEngine Play livestream catalog (a separate GraphQL request) by date
++ team-name matching.
 
 ## Requirements
 
 - `bash`, `curl`, `awk` (BSD awk on macOS is fine)
-- `perl` (only used when `--update` is run against a file with no trailing
-  newline, to preserve that)
+- `python3` (3.6+ for f-strings)
