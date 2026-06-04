@@ -115,7 +115,10 @@
       "location": "Ted Mackorell Soccer Complex",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
       "detailsUrl": "https://www.modular11.com/match_details/116551/2",
-      "score": null
+      "score": {
+        "home": 4,
+        "away": 0
+      }
     },
     {
       "id": "116604",
