@@ -175,7 +175,10 @@
       "location": "Greenwood Field",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=35.615533,-82.570009&query_place_id=ChIJB4mE1UiLWYgRg88aDA-x5cM",
       "detailsUrl": "https://www.modular11.com/match_details/116732/2",
-      "score": null
+      "score": {
+        "home": 1,
+        "away": 1
+      }
     },
     {
       "id": "116818",
