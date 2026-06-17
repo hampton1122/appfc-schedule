@@ -195,7 +195,10 @@
       "location": "Durham County Memorial Stadium",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.0346057,-78.902776&query_place_id=ChIJmVa6L7njrIkRDXa9tOu_BkY",
       "detailsUrl": "https://www.modular11.com/match_details/116818/2",
-      "score": null
+      "score": {
+        "home": 0,
+        "away": 1
+      }
     },
     {
       "id": "116884",
