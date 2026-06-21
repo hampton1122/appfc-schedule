@@ -215,7 +215,10 @@
       "location": "Hough High School",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=35.467813,-80.8286096&query_place_id=ChIJcVWXdvKpVogR-h74NAwdlPY",
       "detailsUrl": "https://www.modular11.com/match_details/116884/2",
-      "score": null
+      "score": {
+        "home": 0,
+        "away": 0
+      }
     },
     {
       "id": "116980",
