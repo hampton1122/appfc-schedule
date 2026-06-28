@@ -235,7 +235,10 @@
       "location": "University of North Carolina Wilmington",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=34.2251719,-77.8745339&query_place_id=ChIJ_1RBc5P1qYkRlkb-ph033oI",
       "detailsUrl": "https://www.modular11.com/match_details/116980/2",
-      "score": null
+      "score": {
+        "home": 0,
+        "away": 3
+      }
     },
     {
       "id": "117090",
