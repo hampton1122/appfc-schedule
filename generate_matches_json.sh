@@ -15,8 +15,10 @@ set -euo pipefail
 DEFAULT_URL='https://www.modular11.com/public_schedule/league/get_matches?open_page=0&academy=0&tournament=24&gender=0&age=0&brackets=&groups=&group=&match_number=0&status=all&match_type=2&schedule=0&team=0&teamPlayer=8105&location=0&as_referee=0&report_status=0&start_date=2026-04-21+00%3A00%3A00&end_date=2026-12-31+23%3A59%3A59'
 
 SE_GRAPHQL_URL='https://api.sportsengineplay.com/graphql'
-SE_CHANNEL_ID='69a6f38d3a27983e4f7e7bff'
-SE_QUERY_HASH='31b3404758f5801d51d1ead0a85505d2fc65f9cd1218f9e398c3dacbc0eab2c5'
+# Appalachian FC's own SportsEngine Play channel (not the league-wide channel) -
+# this is the channel the public streams list page itself queries against:
+# https://sportsengineplay.com/USL/Appalachian-FC-682886/Appalachian-FC?viewType=list
+SE_CHANNEL_ID='69b05a33cc6b669785b21fe3'
 
 URL="$DEFAULT_URL"
 UPDATE=0
@@ -186,10 +188,24 @@ if [[ -z "$MATCH_TSV" ]]; then
 fi
 
 if [[ "$FETCH_STREAMS" -eq 1 ]]; then
-    SE_REQUEST=$(cat <<JSON
-{"operationName":"GetLiveStreams","variables":{"limit":100,"showNonScheduled":false,"hideCourtStreams":true,"showOnlyCourtStreams":false,"channelId":"${SE_CHANNEL_ID}","page":1,"gender":"","level":"","sport":"","sort":{"liveStartDateTime":1,"weight":1},"isLiveOrUpcoming":true,"teamId":"","participantId":null,"subVenue":null,"venue":""},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"${SE_QUERY_HASH}"}}}
-JSON
-)
+    # Send the full query text (as the site itself does) rather than a
+    # persisted-query hash, which goes stale server-side without warning.
+    SE_QUERY=$'query GetLiveStreams($page: Int, $limit: Int = 9, $sort: JSON, $channelId: ID, $isLiveOrUpcoming: Boolean, $gender: String, $level: String, $sublevel: String, $sport: String, $hidePrivateAndUnfollowed: Boolean, $onlyPublic: Boolean, $categories: [ID!], $startDate: String, $endDate: String, $teamId: ID, $participantId: ID, $showNonScheduled: Boolean = false, $hideCourtStreams: Boolean = true, $showOnlyCourtStreams: Boolean = false, $subVenue: String, $venue: String, $hidePins: Boolean = false) {\n  liveStreams(\n    page: $page\n    limit: $limit\n    sort: $sort\n    channelId: $channelId\n    isLiveOrUpcoming: $isLiveOrUpcoming\n    teamId: $teamId\n    teamGender: $gender\n    teamLevel: $level\n    teamSublevel: $sublevel\n    teamSport: $sport\n    hidePrivateAndUnfollowed: $hidePrivateAndUnfollowed\n    onlyPublic: $onlyPublic\n    categories: $categories\n    startDateGte: $startDate\n    startDateLte: $endDate\n    participantId: $participantId\n    showNonScheduled: $showNonScheduled\n    hideCourtStreams: $hideCourtStreams\n    showOnlyCourtStreams: $showOnlyCourtStreams\n    subVenue: $subVenue\n    venue: $venue\n    hidePins: $hidePins\n  ) {\n    totalRecords\n    data {\n      id\n      pageUrl\n      liveStartDateTime\n      eventName\n      homeTeamChannel { team { name } }\n      awayTeamChannel { team { name } }\n      __typename\n    }\n    __typename\n  }\n}\n'
+    SE_REQUEST=$(python3 -c '
+import json, sys
+print(json.dumps({
+    "operationName": "GetLiveStreams",
+    "variables": {
+        "limit": 100, "showNonScheduled": False, "hideCourtStreams": True,
+        "showOnlyCourtStreams": False, "hidePins": False, "page": 1,
+        "sort": {"liveStartDateTime": 1, "weight": 1},
+        "channelId": sys.argv[1], "teamId": None, "participantId": None,
+        "gender": "", "level": "", "sublevel": "", "sport": "",
+        "isLiveOrUpcoming": True, "venue": "", "subVenue": None,
+    },
+    "query": sys.argv[2],
+}))
+' "$SE_CHANNEL_ID" "$SE_QUERY")
     SE_JSON=$(curl -fsS --compressed -X POST "$SE_GRAPHQL_URL" \
         -H 'Content-Type: application/json' \
         --data "$SE_REQUEST")
