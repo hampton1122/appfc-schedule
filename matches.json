@@ -276,9 +276,26 @@
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=36.2262269,-81.6439415&query_place_id=ChIJuxOpetT7UIgRxATtRQSGGNU",
       "detailsUrl": "https://www.modular11.com/match_details/117242/2",
       "score": {
-        "home": 0,
+        "home": 1,
         "away": 0
       }
+    },
+    {
+      "id": "122387",
+      "date": "2026-07-14T19:00:00",
+      "home": {
+        "name": "LVU Rush",
+        "id": "2038",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/703/247157/c94fdb4e-3089-4a4c-a1d2-9456e250b19f/247157.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "Muhlenberg College",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=40.5882955,-75.539452&query_place_id=EiYyNDAwIENoZXcgU3QsIEFsbGVudG93biwgUEEgMTgxMDQsIFVTQSIxEi8KFAoSCWPhL1e9MMSJEb47CMyIsEF1EOASKhQKEglHd3prljDEiREN0gk6N-puSw",
+      "detailsUrl": "https://www.modular11.com/match_details/122387/2",
+      "score": null
     }
   ],
   "streams": {
