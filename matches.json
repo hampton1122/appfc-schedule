@@ -295,6 +295,26 @@
       "location": "Muhlenberg College",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=40.5882955,-75.539452&query_place_id=EiYyNDAwIENoZXcgU3QsIEFsbGVudG93biwgUEEgMTgxMDQsIFVTQSIxEi8KFAoSCWPhL1e9MMSJEb47CMyIsEF1EOASKhQKEglHd3prljDEiREN0gk6N-puSw",
       "detailsUrl": "https://www.modular11.com/match_details/122387/2",
+      "score": {
+        "home": 0,
+        "away": 1
+      }
+    },
+    {
+      "id": "122391",
+      "date": "2026-07-17T12:00:00",
+      "home": {
+        "name": "Charlotte Independence 2",
+        "id": "2137",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/academy/494/78483/65600fca-e27f-45f1-a828-a292a49a6954/78483.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "TowneBank Stadium",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=37.0642445,-76.4936031&query_place_id=ChIJkT9MFU54sIkRJYLBKAWtCos",
+      "detailsUrl": "https://www.modular11.com/match_details/122391/2",
       "score": null
     }
   ],
