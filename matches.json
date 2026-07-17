@@ -319,6 +319,23 @@
         "home": 0,
         "away": 2
       }
+    },
+    {
+      "id": "122393",
+      "date": "2026-07-19T19:30:00",
+      "home": {
+        "name": "TBD",
+        "id": "3093",
+        "crest": "https://d11602kq9f3hhz.cloudfront.net/team/3093/285967/b250998a-7267-4b45-90f0-8df691fc7d08/285967.png"
+      },
+      "away": {
+        "name": "Appalachian FC",
+        "id": "8105"
+      },
+      "location": "TowneBank Stadium",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=37.0642445,-76.4936031&query_place_id=ChIJkT9MFU54sIkRJYLBKAWtCos",
+      "detailsUrl": "https://www.modular11.com/match_details/122393/2",
+      "score": null
     }
   ],
   "streams": {
