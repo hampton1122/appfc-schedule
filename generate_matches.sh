@@ -11,7 +11,8 @@
 #   ./generate_matches.sh --no-streams     # skip SE fetch (MATCHES only)
 set -euo pipefail
 
-DEFAULT_URL='https://www.modular11.com/public_schedule/league/get_matches?open_page=0&academy=0&tournament=24&gender=0&age=0&brackets=&groups=&group=&match_number=0&status=all&match_type=2&schedule=0&team=0&teamPlayer=8105&location=0&as_referee=0&report_status=0&start_date=2026-04-21+00%3A00%3A00&end_date=2026-12-31+23%3A59%3A59'
+YEAR="$(date +%Y)"
+DEFAULT_URL="https://www.modular11.com/public_schedule/league/get_matches?open_page=0&academy=0&tournament=24&gender=0&age=0&brackets=&groups=&group=&match_number=0&status=all&match_type=2&schedule=0&team=8105&teamPlayer=0&location=0&as_referee=0&report_status=0&start_date=${YEAR}-04-21+00%3A00%3A00&end_date=${YEAR}-12-31+23%3A59%3A59"
 
 SE_GRAPHQL_URL='https://api.sportsengineplay.com/graphql'
 SE_CHANNEL_ID='69a6f38d3a27983e4f7e7bff'
