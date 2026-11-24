@@ -68,8 +68,11 @@
     if (!r.played) return '';
     var gd = r.gf - r.ga;
     var gdStr = (gd > 0 ? '+' : '') + gd;
+    // Label from the data, not the clock, so a stale matches.json from a
+    // previous season still shows the right year.
+    var season = matches[0].date.getFullYear();
     return '<div class="appfc-record">' +
-             '<span class="appfc-record-label">2026 Season</span>' +
+             '<span class="appfc-record-label">' + season + ' Season</span>' +
              '<span class="appfc-record-stat"><strong>' + r.w + '</strong>W</span>' +
              '<span class="appfc-record-stat"><strong>' + r.l + '</strong>L</span>' +
              '<span class="appfc-record-stat"><strong>' + r.d + '</strong>D</span>' +
